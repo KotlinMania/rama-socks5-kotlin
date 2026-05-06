@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "rama-socks5-kotlin"
+
