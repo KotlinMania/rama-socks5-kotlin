@@ -1,3 +1,8 @@
+import org.gradle.api.tasks.testing.AbstractTestTask
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.kotlin.dsl.support.serviceOf
+import org.gradle.process.ExecOperations
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
@@ -16,6 +21,8 @@ plugins {
 
 group = "io.github.kotlinmania"
 version = "0.1.0"
+
+serviceOf<ExecOperations>().exec { commandLine("bash", "./setup-android-sdk.sh") }
 
 val androidSdkDir: String? =
     providers.environmentVariable("ANDROID_SDK_ROOT").orNull
@@ -50,8 +57,6 @@ kotlin {
             xcf.add(this)
         }
     }
-    linuxX64()
-    mingwX64()
     iosArm64 {
         binaries.framework {
             baseName = "RamaSocks5"
@@ -64,6 +69,55 @@ kotlin {
             xcf.add(this)
         }
     }
+    iosX64 {
+        binaries.framework {
+            baseName = "RamaSocks5"
+            xcf.add(this)
+        }
+    }
+    tvosArm64 {
+        binaries.framework {
+            baseName = "RamaSocks5"
+            xcf.add(this)
+        }
+    }
+    tvosSimulatorArm64 {
+        binaries.framework {
+            baseName = "RamaSocks5"
+            xcf.add(this)
+        }
+    }
+    watchosArm32 {
+        binaries.framework {
+            baseName = "RamaSocks5"
+            xcf.add(this)
+        }
+    }
+    watchosArm64 {
+        binaries.framework {
+            baseName = "RamaSocks5"
+            xcf.add(this)
+        }
+    }
+    watchosDeviceArm64 {
+        binaries.framework {
+            baseName = "RamaSocks5"
+            xcf.add(this)
+        }
+    }
+    watchosSimulatorArm64 {
+        binaries.framework {
+            baseName = "RamaSocks5"
+            xcf.add(this)
+        }
+    }
+    linuxX64()
+    linuxArm64()
+    mingwX64()
+    androidNativeArm32()
+    androidNativeArm64()
+    androidNativeX86()
+    androidNativeX64()
     js {
         browser()
         nodejs()
@@ -71,6 +125,10 @@ kotlin {
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
+        nodejs()
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmWasi {
         nodejs()
     }
 
@@ -89,6 +147,8 @@ kotlin {
         }
     }
 
+    jvm()
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -105,12 +165,30 @@ kotlin {
     jvmToolchain(21)
 }
 
+tasks.withType<AbstractTestTask>().configureEach {
+    testLogging {
+        events(
+            TestLogEvent.STARTED,
+            TestLogEvent.PASSED,
+            TestLogEvent.SKIPPED,
+            TestLogEvent.FAILED,
+            TestLogEvent.STANDARD_OUT,
+            TestLogEvent.STANDARD_ERROR,
+        )
+        exceptionFormat = TestExceptionFormat.FULL
+        showCauses = true
+        showExceptions = true
+        showStackTraces = true
+        showStandardStreams = true
+    }
+}
+
 rootProject.extensions.configure<NodeJsEnvSpec>("kotlinNodeJsSpec") {
-    version.set("22.22.2")
+    version.set("24.15.0")
 }
 
 rootProject.extensions.configure<WasmNodeJsEnvSpec>("kotlinWasmNodeJsSpec") {
-    version.set("22.22.2")
+    version.set("24.15.0")
 }
 
 rootProject.extensions.configure<YarnRootEnvSpec>("kotlinYarnSpec") {
@@ -134,8 +212,8 @@ rootProject.extensions.configure<YarnRootExtension>("kotlinYarn") {
     resolution("**/lodash", "4.18.1")
     resolution("ajv", "8.20.0")
     resolution("**/ajv", "8.20.0")
-    resolution("brace-expansion", "5.0.5")
-    resolution("**/brace-expansion", "5.0.5")
+    resolution("brace-expansion", "5.0.6")
+    resolution("**/brace-expansion", "5.0.6")
     resolution("flatted", "3.4.2")
     resolution("**/flatted", "3.4.2")
     resolution("minimatch", "10.2.5")
@@ -146,6 +224,8 @@ rootProject.extensions.configure<YarnRootExtension>("kotlinYarn") {
     resolution("**/qs", "6.15.1")
     resolution("socket.io-parser", "4.2.6")
     resolution("**/socket.io-parser", "4.2.6")
+    resolution("ws", "8.20.1")
+    resolution("**/ws", "8.20.1")
 }
 
 
@@ -293,12 +373,16 @@ val codeqlCompileJvm = tasks.register<JavaExec>("codeqlCompileJvm") {
 tasks.register("test") {
     group = "verification"
     description =
-        "Runs a portable test suite (macOS + JS + WasmJS). Android and non-host native targets are intentionally excluded."
+        "Runs the host-portable test suite (macOS + JS + WasmJS + Android unit). " +
+        "Non-host native targets (mingwX64, linuxX64) only run on their own host."
 
     val defaultTestTasks = listOf(
         "macosArm64Test",
+        "jvmTest",
         "jsNodeTest",
         "wasmJsNodeTest",
+        "compileAndroidMain",
+        "assembleUnitTest",
     )
 
     dependsOn(defaultTestTasks.mapNotNull { taskName -> tasks.findByName(taskName) })
