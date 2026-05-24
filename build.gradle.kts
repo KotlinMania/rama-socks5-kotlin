@@ -57,10 +57,18 @@ kotlin {
         binaries.framework { baseName = "RamaSocks5"; xcf.add(this) }
     }
     iosSimulatorArm64 {
-        binaries.framework { baseName = "RamaSocks5"; xcf.add(this) }
+        binaries.framework {
+            baseName = "RamaSocks5"
+            isStatic = true
+            xcf.add(this)
+        }
     }
     iosX64 {
-        binaries.framework { baseName = "RamaSocks5"; xcf.add(this) }
+        binaries.framework {
+            baseName = "RamaSocks5"
+            isStatic = true
+            xcf.add(this)
+        }
     }
 
     tvosArm64 {
