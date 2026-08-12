@@ -11,9 +11,14 @@ public sealed interface SocksByteValue {
 /**
  * Protocol version as defined by [RFC 1928](https://datatracker.ietf.org/doc/html/rfc1928).
  */
-public sealed class ProtocolVersion(override val code: Int) : SocksByteValue {
+public sealed class ProtocolVersion(
+    override val code: Int,
+) : SocksByteValue {
     public data object Socks5 : ProtocolVersion(0x05)
-    public data class Unknown(private val rawCode: Int) : ProtocolVersion(rawCode and 0xff)
+
+    public data class Unknown(
+        private val rawCode: Int,
+    ) : ProtocolVersion(rawCode and 0xff)
 
     public companion object {
         public fun fromCode(code: Int): ProtocolVersion =
@@ -27,9 +32,14 @@ public sealed class ProtocolVersion(override val code: Int) : SocksByteValue {
 /**
  * Subnegotiation version as defined by [RFC 1929](https://datatracker.ietf.org/doc/html/rfc1929#section-2).
  */
-public sealed class UsernamePasswordSubnegotiationVersion(override val code: Int) : SocksByteValue {
+public sealed class UsernamePasswordSubnegotiationVersion(
+    override val code: Int,
+) : SocksByteValue {
     public data object One : UsernamePasswordSubnegotiationVersion(0x01)
-    public data class Unknown(private val rawCode: Int) : UsernamePasswordSubnegotiationVersion(rawCode and 0xff)
+
+    public data class Unknown(
+        private val rawCode: Int,
+    ) : UsernamePasswordSubnegotiationVersion(rawCode and 0xff)
 
     public companion object {
         public fun fromCode(code: Int): UsernamePasswordSubnegotiationVersion =
@@ -43,7 +53,9 @@ public sealed class UsernamePasswordSubnegotiationVersion(override val code: Int
 /**
  * SOCKS5 method as defined by [IANA SOCKS Methods](https://www.iana.org/assignments/socks-methods/socks-methods.xhtml).
  */
-public sealed class SocksMethod(override val code: Int) : SocksByteValue {
+public sealed class SocksMethod(
+    override val code: Int,
+) : SocksByteValue {
     /**
      * No authentication required.
      *
@@ -117,7 +129,9 @@ public sealed class SocksMethod(override val code: Int) : SocksByteValue {
      */
     public data object NoAcceptableMethods : SocksMethod(0xff)
 
-    public data class Unknown(private val rawCode: Int) : SocksMethod(rawCode and 0xff)
+    public data class Unknown(
+        private val rawCode: Int,
+    ) : SocksMethod(rawCode and 0xff)
 
     public companion object {
         public fun fromCode(code: Int): SocksMethod =
@@ -142,7 +156,9 @@ public sealed class SocksMethod(override val code: Int) : SocksByteValue {
  *
  * Reference: <https://datatracker.ietf.org/doc/html/rfc1928#section-4>.
  */
-public sealed class Command(override val code: Int) : SocksByteValue {
+public sealed class Command(
+    override val code: Int,
+) : SocksByteValue {
     /**
      * Request the server to establish a connection on behalf of the client with the destination address.
      *
@@ -167,7 +183,9 @@ public sealed class Command(override val code: Int) : SocksByteValue {
      */
     public data object UdpAssociate : Command(0x03)
 
-    public data class Unknown(private val rawCode: Int) : Command(rawCode and 0xff)
+    public data class Unknown(
+        private val rawCode: Int,
+    ) : Command(rawCode and 0xff)
 
     public companion object {
         public fun fromCode(code: Int): Command =
@@ -187,7 +205,9 @@ public sealed class Command(override val code: Int) : SocksByteValue {
  *
  * Reference: <https://datatracker.ietf.org/doc/html/rfc1928>.
  */
-public sealed class AddressType(override val code: Int) : SocksByteValue {
+public sealed class AddressType(
+    override val code: Int,
+) : SocksByteValue {
     /**
      * The address is a version-4 IP address, with a length of 4 octets.
      */
@@ -206,7 +226,9 @@ public sealed class AddressType(override val code: Int) : SocksByteValue {
      */
     public data object IpV6 : AddressType(0x04)
 
-    public data class Unknown(private val rawCode: Int) : AddressType(rawCode and 0xff)
+    public data class Unknown(
+        private val rawCode: Int,
+    ) : AddressType(rawCode and 0xff)
 
     public companion object {
         public fun fromCode(code: Int): AddressType =
@@ -224,17 +246,30 @@ public sealed class AddressType(override val code: Int) : SocksByteValue {
  *
  * Reference: <https://datatracker.ietf.org/doc/html/rfc1928#section-6>.
  */
-public sealed class ReplyKind(override val code: Int) : SocksByteValue {
+public sealed class ReplyKind(
+    override val code: Int,
+) : SocksByteValue {
     public data object Succeeded : ReplyKind(0x00)
+
     public data object GeneralServerFailure : ReplyKind(0x01)
+
     public data object ConnectionNotAllowed : ReplyKind(0x02)
+
     public data object NetworkUnreachable : ReplyKind(0x03)
+
     public data object HostUnreachable : ReplyKind(0x04)
+
     public data object ConnectionRefused : ReplyKind(0x05)
+
     public data object TtlExpired : ReplyKind(0x06)
+
     public data object CommandNotSupported : ReplyKind(0x07)
+
     public data object AddressTypeNotSupported : ReplyKind(0x08)
-    public data class Unknown(private val rawCode: Int) : ReplyKind(rawCode and 0xff)
+
+    public data class Unknown(
+        private val rawCode: Int,
+    ) : ReplyKind(rawCode and 0xff)
 
     public companion object {
         public fun fromCode(code: Int): ReplyKind =
