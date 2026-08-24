@@ -647,13 +647,16 @@ tasks.register("swiftExportSmokeTest") {
             }
         }
 
-        val scratchDir = layout.buildDirectory.dir("swift-test-scratch").get().asFile
-        scratchDir.deleteRecursively()
+        execOperations
+            .exec {
+                workingDir = layout.projectDirectory.dir("swift-test-harness").asFile
+                commandLine("swift", "package", "reset")
+            }.assertNormalExitValue()
 
         execOperations
             .exec {
                 workingDir = layout.projectDirectory.dir("swift-test-harness").asFile
-                commandLine("swift", "test", "--scratch-path", scratchDir.absolutePath)
+                commandLine("swift", "test")
             }.assertNormalExitValue()
     }
 }
