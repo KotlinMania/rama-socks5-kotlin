@@ -355,6 +355,7 @@ kotlin {
 // Test logging
 // ============================================================================
 tasks.withType<AbstractTestTask>().configureEach {
+    doNotTrackState("Avoid Gradle 9.7 MD5 binary results check on test tasks")
     testLogging {
         events(
             TestLogEvent.STARTED,
@@ -523,6 +524,16 @@ mavenPublishing {
 // Tasks
 // ============================================================================
 
+// Exact test lifecycle task. Without this, ./gradlew test is ambiguous between
+// Android test task names. This runs commonTest through the KMP allTests
+// lifecycle and adds the Android host + Swift Export parity tests.
+tasks.register("test") {
+    group = "verification"
+    description = "Runs the commonTest-backed KMP suite, Android host tests, and Swift Export smoke test."
+    dependsOn("hostTests")
+    dependsOn("swiftExportSmokeTest")
+}
+
 tasks.register("setupAndroidSdk") {
     group = "setup"
     description = "Downloads and configures the project-local Android SDK. (Alias for ensureAndroidSdk)"
@@ -547,6 +558,31 @@ tasks.register("hostTests") {
 
 // Swift Export smoke test — produces the SPM package via embedSwiftExportForXcode
 // (spawned with the Xcode-style env it requires) and runs `swift test` against it,
+tasks.matching { it.name.endsWith("GenerateSPMPackage") }.configureEach {
+    doLast {
+        val spmPackageDir =
+            layout.buildDirectory
+                .dir("SPMPackage")
+                .get()
+                .asFile
+        if (spmPackageDir.exists()) {
+            spmPackageDir.walkTopDown().filter { it.name == "Package.swift" }.forEach { packageSwift ->
+                val text = packageSwift.readText()
+                if (!text.contains("platforms:")) {
+                    packageSwift.writeText(
+                        text.replaceFirst(
+                            Regex("""(Package\(\s*name:\s*"[^"]*",)"""),
+                            "$1\n    platforms: [.macOS(.v14)],",
+                        ),
+                    )
+                }
+            }
+        }
+    }
+}
+
+// Swift Export smoke test — produces the SPM package via embedSwiftExportForXcode
+// (spawned with the Xcode-style env it requires) and runs `swift test` against it,
 // so Swift Export breakage surfaces locally, not only in the swift.yml CI job.
 // Pattern mirrors kasuari-kotlin. This task is part of the build contract and
 // must fail rather than skip when the required toolchain is unavailable.
@@ -557,12 +593,19 @@ tasks.register("swiftExportSmokeTest") {
 
     doLast {
         val execOperations = serviceOf<ExecOperations>()
-        val swiftBuildDir =
+        val swiftBuildFile =
             layout.buildDirectory
                 .dir("swift-test")
                 .get()
                 .asFile
-                .absolutePath
+        swiftBuildFile.deleteRecursively()
+        swiftBuildFile.mkdirs()
+        val swiftBuildDir = swiftBuildFile.absolutePath
+        layout.buildDirectory
+            .dir("bin/macosArm64/SwiftExportBinaryDebugStatic")
+            .get()
+            .asFile
+            .mkdirs()
         execOperations
             .exec {
                 workingDir = projectDir
@@ -597,17 +640,20 @@ tasks.register("swiftExportSmokeTest") {
             if (!text.contains("platforms:")) {
                 generatedPackageSwift.writeText(
                     text.replaceFirst(
-                        Regex("(name:\\s*\"[^\"]*\",)"),
-                        "\$1\n    platforms: [.macOS(.v14)],",
+                        Regex("""(Package\(\s*name:\s*"[^"]*",)"""),
+                        "$1\n    platforms: [.macOS(.v14)],",
                     ),
                 )
             }
         }
 
+        val scratchDir = layout.buildDirectory.dir("swift-test-scratch").get().asFile
+        scratchDir.deleteRecursively()
+
         execOperations
             .exec {
                 workingDir = layout.projectDirectory.dir("swift-test-harness").asFile
-                commandLine("swift", "test")
+                commandLine("swift", "test", "--scratch-path", scratchDir.absolutePath)
             }.assertNormalExitValue()
     }
 }
