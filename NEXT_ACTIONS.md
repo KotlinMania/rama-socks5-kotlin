@@ -4,14 +4,14 @@ Based on AST analysis, here are the concrete next steps.
 
 ## Summary
 
-- **Files Present:** 1/27 (3.7%)
-- **Function parity:** 0/235 matched (target 7) — 0.0%
-- **Class/type parity:** 0/67 matched (target 35) — 0.0%
-- **Combined symbol parity:** 0/302 matched (target 42) — 0.0%
-- **Average inline-code cosine:** 0.00 (function body across 1 matched files)
-- **Average documentation cosine:** 0.99 (doc text across 1 matched files)
-- **Cheat-zeroed Files:** 0
-- **Critical Issues:** 1 files with <0.60 function similarity
+- **Files Present:** 3/27 (11.1%)
+- **Function parity:** 1/235 matched (target 11) — 0.4%
+- **Class/type parity:** 1/67 matched (target 41) — 1.5%
+- **Combined symbol parity:** 2/302 matched (target 52) — 0.7%
+- **Average inline-code cosine:** 0.23 (function body across 2 matched files)
+- **Average documentation cosine:** 0.91 (doc text across 2 matched files)
+- **Cheat-zeroed Files:** 1
+- **Critical Issues:** 3 files with <0.60 function similarity
 
 ## Priority 1: Fix Incomplete High-Dependency Files
 
@@ -27,9 +27,25 @@ No missing high-value files detected.
 
 Every matched file is listed below with function and type symbol parity.
 
-### 1. proto.enums
+### 1. auth
 
-- **Target:** `proto.Enums`
+- **Target:** `ramasocks5.Auth [PROVENANCE-FALLBACK]`
+- **Similarity:** 0.46
+- **Dependents:** 0
+- **Priority Score:** 10305.4
+- **Functions:** 1/2 matched (target 3)
+- **Missing functions:** `from`
+- **Types:** 1/1 matched (target 4)
+- **Missing types:** _none_
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `src/auth.rs` vs expected `auth.rs`
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:src/auth.rs` vs expected `auth.rs`
+- **Proposed provenance header:** `// port-lint: source auth.rs` (current: `// port-lint: source src/auth.rs`)
+- **Proposed provenance header:** `// port-lint: tests auth.rs` (current: `// port-lint: tests src/auth.rs`)
+- **Lint issues:** 2
+
+### 2. proto.enums
+
+- **Target:** `proto.Enums [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.00
 - **Dependents:** 0
 - **Priority Score:** 10110.0
@@ -37,6 +53,25 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing functions:** `from`
 - **Types:** 0/0 matched (target 35)
 - **Missing types:** _none_
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `src/proto/enums.rs` vs expected `proto/enums.rs`
+- **Proposed provenance header:** `// port-lint: source proto/enums.rs` (current: `// port-lint: source src/proto/enums.rs`)
+- **Lint issues:** 1
+
+### 3. lib
+
+- **Target:** `ramasocks5.Lib [STUB] [PROVENANCE-FALLBACK]`
+- **Similarity:** 0.00
+- **Dependents:** 0
+- **Priority Score:** 10.0
+- **Functions:** 0/0 matched (target 1)
+- **Missing functions:** _none_
+- **Types:** 0/0 matched (target 2)
+- **Missing types:** _none_
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `src/lib.rs` vs expected `lib.rs`
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:src/lib.rs` vs expected `lib.rs`
+- **Proposed provenance header:** `// port-lint: source lib.rs` (current: `// port-lint: source src/lib.rs`)
+- **Proposed provenance header:** `// port-lint: tests lib.rs` (current: `// port-lint: tests src/lib.rs`)
+- **Lint issues:** 2
 
 ## Success Criteria
 
@@ -58,10 +93,9 @@ do not treat them as the next implementation target by default.
 
 | Source | Expected target | Deps | Source path | Expected path |
 |--------|-----------------|------|-------------|---------------|
-| `client.mod` | `client.Mod` | 0 | `src/client/mod.rs` | `client/Mod.kt` |
-| `lib` | `Lib` | 0 | `src/lib.rs` | `Lib.kt` |
-| `proto.mod` | `proto.Mod` | 0 | `src/proto/mod.rs` | `proto/Mod.kt` |
-| `server.mod` | `server.Mod` | 0 | `src/server/mod.rs` | `server/Mod.kt` |
-| `test.mod` | `server.test.Mod` | 0 | `src/server/test/mod.rs` | `server/test/Mod.kt` |
-| `udp.mod` | `server.udp.Mod` | 0 | `src/server/udp/mod.rs` | `server/udp/Mod.kt` |
+| `client.mod` | `client.Mod` | 0 | `client/mod.rs` | `client/Mod.kt` |
+| `proto.mod` | `proto.Mod` | 0 | `proto/mod.rs` | `proto/Mod.kt` |
+| `server.mod` | `server.Mod` | 0 | `server/mod.rs` | `server/Mod.kt` |
+| `test.mod` | `server.test.Mod` | 0 | `server/test/mod.rs` | `server/test/Mod.kt` |
+| `udp.mod` | `server.udp.Mod` | 0 | `server/udp/mod.rs` | `server/udp/Mod.kt` |
 
