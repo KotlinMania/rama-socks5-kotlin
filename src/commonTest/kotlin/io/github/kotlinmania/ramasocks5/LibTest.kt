@@ -1,4 +1,4 @@
-// port-lint: tests src/lib.rs
+// port-lint: tests lib.rs
 package io.github.kotlinmania.ramasocks5
 
 import kotlin.test.Test
