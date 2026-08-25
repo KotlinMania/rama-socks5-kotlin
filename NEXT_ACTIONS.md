@@ -4,14 +4,14 @@ Based on AST analysis, here are the concrete next steps.
 
 ## Summary
 
-- **Files Present:** 3/27 (11.1%)
-- **Function parity:** 1/235 matched (target 11) — 0.4%
-- **Class/type parity:** 1/67 matched (target 41) — 1.5%
-- **Combined symbol parity:** 2/302 matched (target 52) — 0.7%
-- **Average inline-code cosine:** 0.23 (function body across 2 matched files)
-- **Average documentation cosine:** 0.91 (doc text across 2 matched files)
+- **Files Present:** 4/27 (14.8%)
+- **Function parity:** 2/232 matched (target 17) — 0.9%
+- **Class/type parity:** 2/67 matched (target 48) — 3.0%
+- **Combined symbol parity:** 4/299 matched (target 65) — 1.3%
+- **Average inline-code cosine:** 0.15 (function body across 4 matched files)
+- **Average documentation cosine:** 0.76 (doc text across 4 matched files)
 - **Cheat-zeroed Files:** 1
-- **Critical Issues:** 3 files with <0.60 function similarity
+- **Critical Issues:** 4 files with <0.60 function similarity
 
 ## Priority 1: Fix Incomplete High-Dependency Files
 
@@ -27,9 +27,20 @@ No missing high-value files detected.
 
 Every matched file is listed below with function and type symbol parity.
 
-### 1. auth
+### 1. proto.error
 
-- **Target:** `ramasocks5.Auth [PROVENANCE-FALLBACK]`
+- **Target:** `proto.Error`
+- **Similarity:** 0.13
+- **Dependents:** 4
+- **Priority Score:** 4030508.8
+- **Functions:** 1/4 matched (target 3)
+- **Missing functions:** `fmt`, `source`, `from`
+- **Types:** 1/1 matched (target 6)
+- **Missing types:** _none_
+
+### 2. auth
+
+- **Target:** `ramasocks5.Auth`
 - **Similarity:** 0.46
 - **Dependents:** 0
 - **Priority Score:** 10305.4
@@ -37,29 +48,21 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing functions:** `from`
 - **Types:** 1/1 matched (target 4)
 - **Missing types:** _none_
-- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `src/auth.rs` vs expected `auth.rs`
-- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:src/auth.rs` vs expected `auth.rs`
-- **Proposed provenance header:** `// port-lint: source auth.rs` (current: `// port-lint: source src/auth.rs`)
-- **Proposed provenance header:** `// port-lint: tests auth.rs` (current: `// port-lint: tests src/auth.rs`)
-- **Lint issues:** 2
 
-### 2. proto.enums
+### 3. proto.enums
 
-- **Target:** `proto.Enums [PROVENANCE-FALLBACK]`
+- **Target:** `proto.Enums`
 - **Similarity:** 0.00
 - **Dependents:** 0
 - **Priority Score:** 10110.0
-- **Functions:** 0/1 matched (target 7)
+- **Functions:** 0/1 matched (target 10)
 - **Missing functions:** `from`
-- **Types:** 0/0 matched (target 35)
+- **Types:** 0/0 matched (target 36)
 - **Missing types:** _none_
-- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `src/proto/enums.rs` vs expected `proto/enums.rs`
-- **Proposed provenance header:** `// port-lint: source proto/enums.rs` (current: `// port-lint: source src/proto/enums.rs`)
-- **Lint issues:** 1
 
-### 3. lib
+### 4. lib
 
-- **Target:** `ramasocks5.Lib [STUB] [PROVENANCE-FALLBACK]`
+- **Target:** `ramasocks5.Lib [ZERO]`
 - **Similarity:** 0.00
 - **Dependents:** 0
 - **Priority Score:** 10.0
@@ -67,11 +70,6 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing functions:** _none_
 - **Types:** 0/0 matched (target 2)
 - **Missing types:** _none_
-- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `src/lib.rs` vs expected `lib.rs`
-- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:src/lib.rs` vs expected `lib.rs`
-- **Proposed provenance header:** `// port-lint: source lib.rs` (current: `// port-lint: source src/lib.rs`)
-- **Proposed provenance header:** `// port-lint: tests lib.rs` (current: `// port-lint: tests src/lib.rs`)
-- **Lint issues:** 2
 
 ## Success Criteria
 
