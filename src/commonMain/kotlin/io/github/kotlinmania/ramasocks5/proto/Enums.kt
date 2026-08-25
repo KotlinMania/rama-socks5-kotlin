@@ -1,4 +1,4 @@
-// port-lint: source src/proto/enums.rs
+// port-lint: source proto/enums.rs
 package io.github.kotlinmania.ramasocks5.proto
 
 /**

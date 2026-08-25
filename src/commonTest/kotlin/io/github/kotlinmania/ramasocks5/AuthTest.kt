@@ -1,4 +1,4 @@
-// port-lint: tests src/auth.rs
+// port-lint: tests auth.rs
 package io.github.kotlinmania.ramasocks5
 
 import io.github.kotlinmania.ramasocks5.proto.SocksMethod
