@@ -1,4 +1,4 @@
-// port-lint: tests proto/enums.rs
+// port-lint: tests rama-socks5/src/proto/enums.rs
 package io.github.kotlinmania.ramasocks5.proto
 
 import kotlin.test.Test
