@@ -7,10 +7,11 @@ import kotlin.test.assertEquals
 class ClientTest {
     @Test
     fun testClientHeaderWriteReadEq() {
-        val header = ClientHeader(
-            version = ProtocolVersion.Socks5,
-            methods = listOf(SocksMethod.NoAuthenticationRequired, SocksMethod.UsernamePassword),
-        )
+        val header =
+            ClientHeader(
+                version = ProtocolVersion.Socks5,
+                methods = listOf(SocksMethod.NoAuthenticationRequired, SocksMethod.UsernamePassword),
+            )
         val decoded = ClientHeader.readFromBytes(header.writeToBytes())
         assertEquals(header, decoded)
     }
@@ -32,19 +33,21 @@ class ClientTest {
 
     @Test
     fun testUsernamePasswordRequestWriteReadEq() {
-        val req1 = UsernamePasswordRequest(
-            version = UsernamePasswordSubnegotiationVersion.One,
-            username = "alice",
-            password = "secretpassword",
-        )
+        val req1 =
+            UsernamePasswordRequest(
+                version = UsernamePasswordSubnegotiationVersion.One,
+                username = "alice",
+                password = "secretpassword",
+            )
         val decoded1 = UsernamePasswordRequest.readFromBytes(req1.writeToBytes())
         assertEquals(req1, decoded1)
 
-        val req2 = UsernamePasswordRequest(
-            version = UsernamePasswordSubnegotiationVersion.One,
-            username = "bob",
-            password = null,
-        )
+        val req2 =
+            UsernamePasswordRequest(
+                version = UsernamePasswordSubnegotiationVersion.One,
+                username = "bob",
+                password = null,
+            )
         val decoded2 = UsernamePasswordRequest.readFromBytes(req2.writeToBytes())
         assertEquals(req2, decoded2)
     }

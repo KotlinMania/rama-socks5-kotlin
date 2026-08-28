@@ -16,11 +16,12 @@ class ServerTest {
 
     @Test
     fun testReplyWriteReadEq() {
-        val reply1 = ServerReply(
-            version = ProtocolVersion.Socks5,
-            reply = ReplyKind.Succeeded,
-            bindAddress = HostWithPort.defaultIpv4(4128),
-        )
+        val reply1 =
+            ServerReply(
+                version = ProtocolVersion.Socks5,
+                reply = ReplyKind.Succeeded,
+                bindAddress = HostWithPort.defaultIpv4(4128),
+            )
         val decoded1 = ServerReply.readFromBytes(reply1.writeToBytes())
         assertEquals(reply1, decoded1)
 
