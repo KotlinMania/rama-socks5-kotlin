@@ -176,11 +176,12 @@ public data class HostWithPort(
  * Compute the length of an authority in encoded bytes.
  */
 public fun authorityLength(authority: HostWithPort): Int =
-    2 + when (val h = authority.host) {
-        is Host.Domain -> 1 + h.name.encodeToByteArray().size
-        is Host.Ipv4 -> 4
-        is Host.Ipv6 -> 16
-    }
+    2 +
+        when (val h = authority.host) {
+            is Host.Domain -> 1 + h.name.encodeToByteArray().size
+            is Host.Ipv4 -> 4
+            is Host.Ipv6 -> 16
+        }
 
 /**
  * Read the authority from a SOCKS5 protocol byte stream.
