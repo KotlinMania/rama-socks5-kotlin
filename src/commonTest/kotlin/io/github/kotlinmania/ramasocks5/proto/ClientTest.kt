@@ -1,4 +1,4 @@
-// port-lint: tests proto/client.rs
+// port-lint: tests rama-socks5/src/proto/client.rs
 package io.github.kotlinmania.ramasocks5.proto
 
 import kotlin.test.Test

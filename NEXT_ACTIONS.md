@@ -8,8 +8,8 @@ Based on AST analysis, here are the concrete next steps.
 - **Function parity:** 23/240 matched (target 87) — 9.6%
 - **Class/type parity:** 5/80 matched (target 64) — 6.2%
 - **Combined symbol parity:** 28/320 matched (target 151) — 8.8%
-- **Average inline-code cosine:** 0.18 (function body across 8 matched files)
-- **Average documentation cosine:** 0.61 (doc text across 8 matched files)
+- **Average inline-code cosine:** 0.21 (function body across 7 matched files)
+- **Average documentation cosine:** 0.65 (doc text across 7 matched files)
 - **Cheat-zeroed Files:** 0
 - **Critical Issues:** 8 files with <0.60 function similarity
 
@@ -86,7 +86,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing types:** _none_
 - **Tests:** 1/4 matched
 
-### 6. auth
+### 6. rama-socks5.auth
 
 - **Target:** `ramasocks5.Auth`
 - **Similarity:** 0.46
@@ -128,5 +128,5 @@ do not treat them as the next implementation target by default.
 
 | Source | Target | Path |
 |--------|--------|------|
-| `lib` | `ramasocks5.Lib` | `lib` |
+| `rama-socks5.lib` | `ramasocks5.Lib` | `rama-socks5/src/lib` |
 

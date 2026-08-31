@@ -1,4 +1,4 @@
-// port-lint: tests proto/udp.rs
+// port-lint: tests rama-socks5/src/proto/udp.rs
 package io.github.kotlinmania.ramasocks5.proto
 
 import kotlin.test.Test

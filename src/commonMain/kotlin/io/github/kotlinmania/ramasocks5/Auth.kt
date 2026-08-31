@@ -1,4 +1,4 @@
-// port-lint: source auth.rs
+// port-lint: source rama-socks5/src/auth.rs
 package io.github.kotlinmania.ramasocks5
 
 import io.github.kotlinmania.ramasocks5.proto.SocksMethod
