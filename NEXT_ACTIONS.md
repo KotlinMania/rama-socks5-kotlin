@@ -29,7 +29,7 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 1. proto.error
 
-- **Target:** `proto.Error`
+- **Target:** `proto.Error [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.13
 - **Dependents:** 4
 - **Priority Score:** 4030508.8
@@ -37,10 +37,15 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing functions:** `fmt`, `source`, `from`
 - **Types:** 1/1 matched (target 6)
 - **Missing types:** _none_
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `rama-socks5/src/proto/error.rs` vs expected `proto/error.rs`
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:rama-socks5/src/proto/error.rs` vs expected `proto/error.rs`
+- **Proposed provenance header:** `// port-lint: source proto/error.rs` (current: `// port-lint: source rama-socks5/src/proto/error.rs`)
+- **Proposed provenance header:** `// port-lint: tests proto/error.rs` (current: `// port-lint: tests rama-socks5/src/proto/error.rs`)
+- **Lint issues:** 2
 
 ### 2. proto.client
 
-- **Target:** `proto.Client`
+- **Target:** `proto.Client [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.13
 - **Dependents:** 0
 - **Priority Score:** 101408.7
@@ -49,10 +54,15 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/5 matched (target 4)
 - **Missing types:** `Header`, `Request`, `RequestRef`, `UsernamePasswordRequestRef`
 - **Tests:** 1/3 matched
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `rama-socks5/src/proto/client.rs` vs expected `proto/client.rs`
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:rama-socks5/src/proto/client.rs` vs expected `proto/client.rs`
+- **Proposed provenance header:** `// port-lint: source proto/client.rs` (current: `// port-lint: source rama-socks5/src/proto/client.rs`)
+- **Proposed provenance header:** `// port-lint: tests proto/client.rs` (current: `// port-lint: tests rama-socks5/src/proto/client.rs`)
+- **Lint issues:** 2
 
 ### 3. proto.common
 
-- **Target:** `proto.Common`
+- **Target:** `proto.Common [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.23
 - **Dependents:** 0
 - **Priority Score:** 91407.7
@@ -61,10 +71,15 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 0/2 matched (target 8)
 - **Missing types:** `ReadError`, `SocksAuthority`
 - **Tests:** 2/7 matched
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `rama-socks5/src/proto/common.rs` vs expected `proto/common.rs`
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:rama-socks5/src/proto/common.rs` vs expected `proto/common.rs`
+- **Proposed provenance header:** `// port-lint: source proto/common.rs` (current: `// port-lint: source rama-socks5/src/proto/common.rs`)
+- **Proposed provenance header:** `// port-lint: tests proto/common.rs` (current: `// port-lint: tests rama-socks5/src/proto/common.rs`)
+- **Lint issues:** 2
 
 ### 4. proto.server
 
-- **Target:** `proto.Server`
+- **Target:** `proto.Server [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.33
 - **Dependents:** 0
 - **Priority Score:** 61706.7
@@ -73,10 +88,15 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/3 matched (target 4)
 - **Missing types:** `Header`, `Reply`
 - **Tests:** 3/3 matched
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `rama-socks5/src/proto/server.rs` vs expected `proto/server.rs`
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:rama-socks5/src/proto/server.rs` vs expected `proto/server.rs`
+- **Proposed provenance header:** `// port-lint: source proto/server.rs` (current: `// port-lint: source rama-socks5/src/proto/server.rs`)
+- **Proposed provenance header:** `// port-lint: tests proto/server.rs` (current: `// port-lint: tests rama-socks5/src/proto/server.rs`)
+- **Lint issues:** 2
 
 ### 5. proto.udp
 
-- **Target:** `proto.Udp`
+- **Target:** `proto.Udp [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.19
 - **Dependents:** 0
 - **Priority Score:** 50908.1
@@ -85,10 +105,15 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/1 matched (target 2)
 - **Missing types:** _none_
 - **Tests:** 1/4 matched
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `rama-socks5/src/proto/udp.rs` vs expected `proto/udp.rs`
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:rama-socks5/src/proto/udp.rs` vs expected `proto/udp.rs`
+- **Proposed provenance header:** `// port-lint: source proto/udp.rs` (current: `// port-lint: source rama-socks5/src/proto/udp.rs`)
+- **Proposed provenance header:** `// port-lint: tests proto/udp.rs` (current: `// port-lint: tests rama-socks5/src/proto/udp.rs`)
+- **Lint issues:** 2
 
-### 6. rama-socks5.auth
+### 6. auth
 
-- **Target:** `ramasocks5.Auth`
+- **Target:** `ramasocks5.Auth [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.46
 - **Dependents:** 0
 - **Priority Score:** 10305.4
@@ -96,10 +121,15 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing functions:** `from`
 - **Types:** 1/1 matched (target 4)
 - **Missing types:** _none_
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `rama-socks5/src/auth.rs` vs expected `auth.rs`
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:rama-socks5/src/auth.rs` vs expected `auth.rs`
+- **Proposed provenance header:** `// port-lint: source auth.rs` (current: `// port-lint: source rama-socks5/src/auth.rs`)
+- **Proposed provenance header:** `// port-lint: tests auth.rs` (current: `// port-lint: tests rama-socks5/src/auth.rs`)
+- **Lint issues:** 2
 
 ### 7. proto.enums
 
-- **Target:** `proto.Enums`
+- **Target:** `proto.Enums [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.00
 - **Dependents:** 0
 - **Priority Score:** 10110.0
@@ -107,6 +137,11 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing functions:** `from`
 - **Types:** 0/0 matched (target 36)
 - **Missing types:** _none_
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `rama-socks5/src/proto/enums.rs` vs expected `proto/enums.rs`
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:rama-socks5/src/proto/enums.rs` vs expected `proto/enums.rs`
+- **Proposed provenance header:** `// port-lint: source proto/enums.rs` (current: `// port-lint: source rama-socks5/src/proto/enums.rs`)
+- **Proposed provenance header:** `// port-lint: tests proto/enums.rs` (current: `// port-lint: tests rama-socks5/src/proto/enums.rs`)
+- **Lint issues:** 2
 
 ## Success Criteria
 
@@ -128,5 +163,5 @@ do not treat them as the next implementation target by default.
 
 | Source | Target | Path |
 |--------|--------|------|
-| `rama-socks5.lib` | `ramasocks5.Lib` | `rama-socks5/src/lib` |
+| `lib` | `ramasocks5.Lib` | `lib` |
 
