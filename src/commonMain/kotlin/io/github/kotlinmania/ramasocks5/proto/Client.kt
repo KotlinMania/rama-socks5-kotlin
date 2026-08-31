@@ -1,4 +1,4 @@
-// port-lint: source proto/client.rs
+// port-lint: source rama-socks5/src/proto/client.rs
 package io.github.kotlinmania.ramasocks5.proto
 
 /**
