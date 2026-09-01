@@ -2,7 +2,7 @@
   "type": "port",
   "name": "rama-socks5-kotlin",
   "source": {
-    "path": "tmp",
+    "path": "tmp/rama-socks5/src",
     "lang": "rust"
   },
   "target": {
