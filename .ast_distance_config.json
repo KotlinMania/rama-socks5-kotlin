@@ -16,6 +16,20 @@
     "lint": true
   },
   "reexport_modules": [
-    "lib"
+    "lib",
+    "lib.rs",
+    "rama-socks5/src/lib.rs",
+    "proto/mod",
+    "proto.mod",
+    "proto/mod.rs",
+    "rama-socks5/src/proto/mod.rs",
+    "client/mod",
+    "client.mod",
+    "client/mod.rs",
+    "rama-socks5/src/client/mod.rs",
+    "server/mod",
+    "server.mod",
+    "server/mod.rs",
+    "rama-socks5/src/server/mod.rs"
   ]
 }
