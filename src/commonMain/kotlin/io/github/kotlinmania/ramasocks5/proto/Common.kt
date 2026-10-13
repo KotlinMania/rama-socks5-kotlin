@@ -1,6 +1,10 @@
 // port-lint: source proto/common.rs
 package io.github.kotlinmania.ramasocks5.proto
 
+import io.github.kotlinmania.bytes.Bytes
+import io.github.kotlinmania.bytes.buf.Buf
+import io.github.kotlinmania.bytes.buf.BufMut
+
 /**
  * Low-level binary reader for SOCKS5 protocol elements.
  */
@@ -8,10 +12,15 @@ public class ByteReader(
     private val data: ByteArray,
     public var offset: Int = 0,
 ) {
+    public constructor(bytes: Bytes) : this(bytes.asSlice())
+    public constructor(buf: Buf) : this(ByteArray(buf.remaining()).also { buf.copyToSlice(it) })
+
     public val remaining: Int
         get() = data.size - offset
 
     public fun hasRemaining(): Boolean = remaining > 0
+
+    public fun toBytes(): Bytes = Bytes.copyFromSlice(data.copyOfRange(offset, offset + remaining))
 
     public fun readU8(): Int {
         if (offset >= data.size) {
@@ -63,6 +72,12 @@ public class ByteWriter(
     }
 
     public fun toByteArray(): ByteArray = buffer.copyOf(size)
+
+    public fun toBytes(): Bytes = Bytes.copyFromSlice(buffer.copyOf(size))
+
+    public fun writeTo(buf: BufMut) {
+        buf.putSlice(buffer.copyOf(size))
+    }
 
     private fun ensureCapacity(required: Int) {
         if (required > buffer.size) {
@@ -189,12 +204,13 @@ public fun authorityLength(authority: HostWithPort): Int =
 public fun readAuthority(reader: ByteReader): HostWithPort {
     val addressTypeCode = reader.readU8()
     val host: Host =
-        when (val addressType = AddressType.fromCode(addressTypeCode)) {
+        when (AddressType.fromCode(addressTypeCode)) {
             AddressType.IpV4 -> {
                 val array = ByteArray(4)
                 reader.readExact(array)
                 Host.Ipv4(array)
             }
+
             AddressType.DomainName -> {
                 val n = reader.readU8()
                 if (n == 0) {
@@ -204,11 +220,13 @@ public fun readAuthority(reader: ByteReader): HostWithPort {
                 reader.readExact(raw)
                 Host.Domain(raw.decodeToString())
             }
+
             AddressType.IpV6 -> {
                 val array = ByteArray(16)
                 reader.readExact(array)
                 Host.Ipv6(array)
             }
+
             is AddressType.Unknown -> {
                 throw ProtocolError.UnexpectedByte(3, addressTypeCode.toUByte())
             }
@@ -228,14 +246,83 @@ public fun writeAuthorityToBuf(authority: HostWithPort, writer: ByteWriter) {
             writer.writeU8(bytes.size)
             writer.writeBytes(bytes)
         }
+
         is Host.Ipv4 -> {
             writer.writeU8(AddressType.IpV4.code)
             writer.writeBytes(h.octets)
         }
+
         is Host.Ipv6 -> {
             writer.writeU8(AddressType.IpV6.code)
             writer.writeBytes(h.octets)
         }
     }
     writer.writeU16(authority.port)
+}
+
+/**
+ * Read the authority from a Bytes buffer.
+ */
+public fun readAuthority(bytes: Bytes): HostWithPort = readAuthority(ByteReader(bytes))
+
+/**
+ * Read the authority from a Buf stream matching upstream read_authority.
+ */
+public fun readAuthority(buf: Buf): HostWithPort {
+    val addressTypeCode = buf.getU8().toInt()
+    val host: Host =
+        when (AddressType.fromCode(addressTypeCode)) {
+            AddressType.IpV4 -> {
+                val array = ByteArray(4)
+                buf.copyToSlice(array)
+                Host.Ipv4(array)
+            }
+
+            AddressType.DomainName -> {
+                val n = buf.getU8().toInt()
+                if (n == 0) {
+                    throw ProtocolError.UnexpectedByte(4, n.toUByte())
+                }
+                val raw = ByteArray(n)
+                buf.copyToSlice(raw)
+                Host.Domain(raw.decodeToString())
+            }
+
+            AddressType.IpV6 -> {
+                val array = ByteArray(16)
+                buf.copyToSlice(array)
+                Host.Ipv6(array)
+            }
+
+            is AddressType.Unknown -> {
+                throw ProtocolError.UnexpectedByte(3, addressTypeCode.toUByte())
+            }
+        }
+    val port = buf.getU16().toInt()
+    return HostWithPort(host, port)
+}
+
+/**
+ * Write the authority into a BufMut buffer matching upstream write_authority_to_buf.
+ */
+public fun writeAuthorityToBuf(authority: HostWithPort, buf: BufMut) {
+    when (val h = authority.host) {
+        is Host.Domain -> {
+            buf.putU8(AddressType.DomainName.code.toUByte())
+            val bytes = h.name.encodeToByteArray()
+            buf.putU8(bytes.size.toUByte())
+            buf.putSlice(bytes)
+        }
+
+        is Host.Ipv4 -> {
+            buf.putU8(AddressType.IpV4.code.toUByte())
+            buf.putSlice(h.octets)
+        }
+
+        is Host.Ipv6 -> {
+            buf.putU8(AddressType.IpV6.code.toUByte())
+            buf.putSlice(h.octets)
+        }
+    }
+    buf.putU16(authority.port.toUShort())
 }

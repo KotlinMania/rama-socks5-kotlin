@@ -42,7 +42,7 @@ public data class ClientHeader(
             }
 
             val methods = ArrayList<SocksMethod>(count)
-            for (i in 0 until count) {
+            repeat(count) {
                 methods.add(SocksMethod.fromCode(reader.readU8()))
             }
             return ClientHeader(version, methods)
