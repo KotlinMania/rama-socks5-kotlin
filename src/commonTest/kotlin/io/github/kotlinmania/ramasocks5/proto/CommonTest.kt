@@ -1,8 +1,9 @@
 // port-lint: tests proto/common.rs
 package io.github.kotlinmania.ramasocks5.proto
 
+import io.github.kotlinmania.bytes.BytesMut
+import io.github.kotlinmania.prettyassertions.assertEq
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class CommonTest {
     @Test
@@ -16,7 +17,7 @@ class CommonTest {
 
         for ((authority, expectedLength) in testCases) {
             val length = authorityLength(authority)
-            assertEquals(expectedLength, length, "authority: $authority")
+            assertEq(expectedLength, length)
         }
     }
 
@@ -35,7 +36,13 @@ class CommonTest {
             val bytes = writer.toByteArray()
             val reader = ByteReader(bytes)
             val decoded = readAuthority(reader)
-            assertEquals(auth, decoded)
+            assertEq(auth, decoded)
+
+            val bufMut = BytesMut.withCapacity(64)
+            writeAuthorityToBuf(auth, bufMut)
+            val buf = bufMut.freeze()
+            val decodedFromBuf = readAuthority(buf)
+            assertEq(auth, decodedFromBuf)
         }
     }
 }
